@@ -1,0 +1,27 @@
+﻿{
+  "Width": 5,
+  "Height": 4,
+  "EntryPoint": {
+    "X": 0,
+    "Y": 1
+  },
+  "EntryDirection": "N",
+  "ExitPoint": {
+    "X": 4,
+    "Y": 2
+  },
+  "Mines": [
+    {
+      "X": 1,
+      "Y": 1
+    },
+    {
+      "X": 3,
+      "Y": 1
+    },
+    {
+      "X": 4,
+      "Y": 3
+    }
+  ]
+}
