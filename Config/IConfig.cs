@@ -6,6 +6,6 @@ namespace Config
     {
         Config GetConfig(string fileName);
 
-        List<string> GetMoves(string fileName);
+        List<List<string>> GetMoves(string fileName);
     }
 }

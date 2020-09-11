@@ -8,7 +8,6 @@ namespace Engine
     {
         private GamePoint currentPoint;
         private readonly Config.Config cfg;
-        private int seq;
 
         public RuleEngine(Config.Config config)
         {
@@ -21,10 +20,10 @@ namespace Engine
             }
         }
 
-        public void Run(List<string> moves)
+        public string  Run(List<string> moves)
         {
-            if (CheckOnExit())
-                return;
+            if (IsOnExit())
+                return "Success";
 
             foreach (var m in moves)
             {
@@ -36,15 +35,16 @@ namespace Engine
                 }
 
                 currentPoint = newPoint;
-                seq++;
+                //TracePosition();
 
-                if (CheckOnExit())
-                    return;
+                if (IsOnExit())
+                    return "Success";
 
-                ShowMoveResult();
+                if (!CheckMoveResult())
+                    return "Mine hit";
             }
 
-            Console.WriteLine("No moves left. Exit not reached.");
+            return "No moves left. Exit not reached.";
         }
 
         private bool IsValidPoint(GamePoint point)
@@ -58,7 +58,7 @@ namespace Engine
             {
                 "r" => new GamePoint(currentPoint.X, currentPoint.Y, GetNewDirection(currentPoint.Direction)),
                 "m" => new GamePoint(GetNewPoint()),
-                _ => throw new Exception($"Seg {seq}: unknown move")
+                _ => throw new Exception("Unknown move")
             };
         }
 
@@ -68,7 +68,7 @@ namespace Engine
             "E" => new GamePoint(currentPoint.X + 1, currentPoint.Y, currentPoint.Direction),
             "S" => new GamePoint(currentPoint.X, currentPoint.Y + 1, currentPoint.Direction),
             "W" => new GamePoint(currentPoint.X - 1, currentPoint.Y, currentPoint.Direction),
-            _ => throw new Exception($"Seg {seq}: Unknown direction")
+            _ => throw new Exception("Unknown direction")
         };
 
         private string GetNewDirection(string direction) => direction switch
@@ -80,27 +80,19 @@ namespace Engine
             _ => throw new Exception("Unknown direction")
         };
 
-        private void ShowMoveResult()
+        private bool CheckMoveResult()
         {
-            var res = cfg.Mines.Any(m => m.X == currentPoint.X && m.Y == currentPoint.Y);
-            Console.WriteLine(res ? $"Seg {seq}: Mine hit" : $"Seg {seq}: Success");
-        }
-
-
-        private bool CheckOnExit()
-        {
-            var res = IsOnExit();
-            if (res)
-            {
-                Console.WriteLine($"Seg {seq}: Exit Reached");
-            }
-
-            return res;
+            return !cfg.Mines.Any(m => m.X == currentPoint.X && m.Y == currentPoint.Y);
         }
 
         bool IsOnExit()
         {
             return currentPoint.X == cfg.ExitPoint.X && currentPoint.Y == cfg.ExitPoint.Y;
+        }
+
+        private void TracePosition()
+        {
+            Console.WriteLine($"X:{currentPoint.X}, Y:{currentPoint.Y}, D: {currentPoint.Direction}");
         }
     }
 }

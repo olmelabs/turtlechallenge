@@ -4,6 +4,6 @@ namespace Engine
 {
     public interface IRuleEngine
     {
-        void Run(List<string> moves);
+        string Run(List<string> moves);
     }
 }

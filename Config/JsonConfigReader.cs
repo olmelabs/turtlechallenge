@@ -12,9 +12,9 @@ namespace Config
             return JsonSerializer.Deserialize<Config>(File.ReadAllText(fileName));
         }
 
-        public List<string> GetMoves(string fileName)
+        public List<List<string>> GetMoves(string fileName)
         {
-            return JsonSerializer.Deserialize<List<string>>(File.ReadAllText(fileName));
+            return JsonSerializer.Deserialize<List<List<string>>>(File.ReadAllText(fileName));
         }
     }
 }
